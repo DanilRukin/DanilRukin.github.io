@@ -2,7 +2,7 @@ baseURL: "https://DanilRukin.github.io/"
 title: "Danil Rukin - C# Разработчик | Портфолио"
 pagination:
   pagerSize: 5
-theme: "PaperMod"
+theme: "papermod"
 
 enableRobotsTXT: true
 buildDrafts: false
