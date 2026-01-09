@@ -25,12 +25,4 @@ description: "C# разработчик, специализация: .NET 8, м�
 
 ### 🔥 Последние статьи
 
-{{< recent-posts 3 >}}
-
 ### 📊 Активность на GitHub
-
-{{< github-stats user="DanilRukin" >}}+++
-date = '2026-01-09T23:16:17+07:00'
-draft = true
-title = ''
-+++

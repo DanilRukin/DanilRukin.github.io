@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>.NET 8 on Danil Rukin - C# Разработчик | Портфолио</title>
+    <link>http://localhost:1313/tags/.net-8/</link>
+    <description>Recent content in .NET 8 on Danil Rukin - C# Разработчик | Портфолио</description>
+    <generator>Hugo -- 0.154.3</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 01 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/.net-8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Демо нейросети LeNet на C#</title>
+      <link>http://localhost:1313/experiments/lenet-demo/</link>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/experiments/lenet-demo/</guid>
+      <description>Интерактивная демонстрация нейросети LeNet для распознавания рукописных цифр, реализованная на C# и .NET 8</description>
+    </item>
+  </channel>
+</rss>

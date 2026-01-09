@@ -1,8 +1,8 @@
 ---
-title: "Content Placeholder"
-build:
-  render: never
-  list: never
-  publishResources: false
+title: "Danil Rukin | C# Разработчик"
+date: 2024-01-01
+layout: "home"
+description: "C# разработчик, специализация: .NET 8, микросервисы, финтех, нейросети"
 ---
 
+## 👋 Привет, я Данил Рукин
