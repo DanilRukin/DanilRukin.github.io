@@ -1,0 +1,88 @@
+baseURL: "https://DanilRukin.github.io/"
+title: "Danil Rukin - C# Разработчик | Портфолио"
+pagination:
+  pagerSize: 5
+theme: papermod
+
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+enableInlineShortcodes: true
+enableEmoji: true
+pygmentsUseClasses: true
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+menu:
+  main:
+    - identifier: home
+      name: Главная
+      url: /
+      weight: 1
+    - identifier: blog
+      name: Блог
+      url: /blog/
+      weight: 2
+    - identifier: projects
+      name: Проекты
+      url: /projects/
+      weight: 3
+    - identifier: experiments
+      name: Демо
+      url: /experiments/
+      weight: 4
+    - identifier: resume
+      name: Резюме
+      url: /resume/
+      weight: 5
+    - identifier: github
+      name: GitHub
+      url: https://github.com/DanilRukin
+      weight: 6
+
+params:
+  env: production
+  title: Danil Rukin
+  description: "C# разработчик, переход на современный стек, финтех. Портфолио с блогом и демо нейросети на .NET 8"
+  keywords: ["C#", ".NET 8", "Нейросети", "FinTech", "SaaS", "Портфолио"]
+
+  defaultTheme: auto
+  disableThemeToggle: false
+
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+
+  comments:
+    enabled: true
+    provider: "utterances"
+    utterances:
+      repo: "DanilRukin/DanilRukin.github.io"
+      issueTerm: "pathname"
+      theme: "github-light"
+
+  analytics:
+    google: "G-XXXXXXXXXX" # Заменить на свой ID
+    yandex: "XXXXXXXXXX" # Заменить на свой ID
+
+  socialIcons:
+    - name: "github"
+      url: "https://github.com/DanilRukin"
+    - name: "linkedin"
+      url: "https://linkedin.com/in/danilrukin"
+    - name: "telegram"
+      url: "https://t.me/danilrukin"
+    - name: "email"
+      url: "mailto:contact@danilrukin.com"
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
