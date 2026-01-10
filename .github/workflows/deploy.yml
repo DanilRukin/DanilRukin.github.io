@@ -2,9 +2,7 @@ name: Deploy Hugo Site to GitHub Pages
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -14,7 +12,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -32,8 +30,11 @@ jobs:
           hugo-version: "0.154.3"
           extended: true
 
-      - name: Build Hugo Site
-        run: hugo --minify
+      - name: Build
+        run: hugo --minify --baseURL "https://DanilRukin.github.io/"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
