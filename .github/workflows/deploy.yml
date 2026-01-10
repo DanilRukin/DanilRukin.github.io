@@ -31,7 +31,7 @@ jobs:
           extended: true
 
       - name: Build
-        run: hugo --minify --baseURL "https://DanilRukin.github.io/"
+        run: hugo --minify --baseURL "https://danilrukin.github.io/"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
