@@ -15,5 +15,26 @@
       <guid>http://localhost:1313/categories/%D1%8D%D0%BA%D1%81%D0%BF%D0%B5%D1%80%D0%B8%D0%BC%D0%B5%D0%BD%D1%82%D1%8B/</guid>
       <description></description>
     </item>
+    <item>
+      <title>Architecture</title>
+      <link>http://localhost:1313/categories/architecture/</link>
+      <pubDate>Sun, 10 Sep 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/architecture/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Career</title>
+      <link>http://localhost:1313/categories/career/</link>
+      <pubDate>Sun, 10 Sep 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/career/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Team Leadership</title>
+      <link>http://localhost:1313/categories/team-leadership/</link>
+      <pubDate>Sun, 10 Sep 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/team-leadership/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

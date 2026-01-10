@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Mediator on Danil Rukin - C# Разработчик | Портфолио</title>
+    <link>http://localhost:1313/tags/mediator/</link>
+    <description>Recent content in Mediator on Danil Rukin - C# Разработчик | Портфолио</description>
+    <generator>Hugo -- 0.154.3</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 15 Mar 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/mediator/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Модернизация ERP системы: от Legacy к Современной Архитектуре</title>
+      <link>http://localhost:1313/projects/erp-module/</link>
+      <pubDate>Wed, 15 Mar 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/erp-module/</guid>
+      <description>Полный кейс рефакторинга и архитектурной переработки ERP-системы с внедрением современных .NET практик в .NET Framework проект</description>
+    </item>
+  </channel>
+</rss>
