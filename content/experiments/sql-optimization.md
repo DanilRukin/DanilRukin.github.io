@@ -11,12 +11,12 @@ tags:
     "Database",
     "Query Tuning",
   ]
-categories: ["Эксперименты"]
+#categories: ["Эксперименты"]
 type: "demo"
 layout: "demo"
 featured: true
 github: "https://github.com/DanilRukin/sql-optimization-examples"
-reading_time: 8
+reading_time: 10
 ---
 
 # SQL Оптимизация: Практическое руководство

@@ -1,9 +1,8 @@
-baseURL: "https://danilrukin.github.io/"
+baseURL: "http://localhost:1313/"
 title: "Данил Рукин - C#/.NET Developer"
 pagination:
   pagerSize: 5
 theme: "papermod"
-languageCode: ru
 
 enableRobotsTXT: true
 buildDrafts: false

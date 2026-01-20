@@ -12,7 +12,7 @@ tags:
     "DI",
     "Mediator",
   ]
-categories: ["Проекты"]
+#categories: ["Проекты"]
 featured: true
 github: "https://github.com/DanilRukin/legacy-modernization-examples"
 demo: "/experiments/di-container-demo"

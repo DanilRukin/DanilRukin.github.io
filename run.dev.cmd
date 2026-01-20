@@ -1,0 +1,1 @@
+hugo server -D -c hugo.dev.yml

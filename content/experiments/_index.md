@@ -1,5 +1,8 @@
-+++
-date = '2026-01-09T23:15:48+07:00'
-draft = true
-title = 'Experiments'
-+++
+---
+title: "Интерактивные демо проектов"
+date: 2025-01-10
+layout: "home"
+description: "Интерактивные демо проектов"
+---
+
+## fffjfj

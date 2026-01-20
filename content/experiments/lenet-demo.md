@@ -3,7 +3,7 @@ title: "Демо нейросети LeNet на C#"
 date: 2024-01-01
 description: "Интерактивная демонстрация нейросети LeNet для распознавания рукописных цифр, реализованная на C# и .NET 8"
 tags: ["нейросети", "C#", ".NET 8", "LeNet", "демо"]
-categories: ["Эксперименты"]
+#categories: ["Эксперименты"]
 type: "demo"
 layout: "demo"
 draft: false
