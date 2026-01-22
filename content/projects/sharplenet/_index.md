@@ -5,4 +5,4 @@ layout: "home"
 description: "Проект SharpLenet"
 ---
 
-Цикл статей о создании нейросети LeNet на C#.
+Цикл статей о создании нейросети LeNet на C#. Код проекта доступен [здесь](https://github.com/DanilRukin/SharpLeNet).
