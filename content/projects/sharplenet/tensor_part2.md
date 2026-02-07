@@ -665,6 +665,18 @@ private void BackwardToParents()
             }
             break;
 
+        case TensorOperation.Sum:
+            // Для операции суммирования всех элементов в скаляр
+            // ∂L/∂x_i = ∂L/∂sum * 1 (для каждого элемента)
+            if (LeftParent != null && Grad != null)
+            {
+                double scalarGrad = Grad.Data[0];
+                Tensor gradForParent = new Tensor(LeftParent.Shape);
+                gradForParent.Fill(scalarGrad);
+                LeftParent.Backward(gradForParent);
+            }
+            break;
+
         default:
             // Листовой узел (исходные данные) - не имеет родителей
             break;

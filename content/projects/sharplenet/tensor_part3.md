@@ -9,7 +9,7 @@ reading_time: 5
 featured: true
 ---
 
-Добро пожаловать на третью часть реализации тензора и четвертую статью всего цикла. Здесь мы дополним алгоритм автоматического дифференцирования операциями ReLU, Softmax, Log.
+Добро пожаловать на третью часть реализации тензора и четвертую статью всего цикла. Здесь мы дополним алгоритм автоматического дифференцирования операциями ReLU, Softmax, Log, Subtract, Broadcast.
 
 # 1. ReLU (Rectified Linear Unit) - функция активации
 
@@ -152,10 +152,33 @@ public static Tensor Softmax(this Tensor a)
 
 ```csharp
 case TensorOperation.Softmax:
-    // Производная softmax сложная, но мы ее реализуем через CrossEntropy позже
-    // Пока оставим placeholder
-    throw new NotImplementedException("Вычисление производной Softmax будет " +
-        "реализовано позже через CrossEntropy");
+    // Для softmax (не используется с CrossEntropy)
+    // Производная сложная: ∂softmax_i/∂z_j = softmax_i * (δ_ij - softmax_j)
+    // где δ_ij = 1 если i==j, иначе 0
+    if (LeftParent != null)
+    {
+        int batchSize = Shape[0];
+        int numClasses = Shape[1];
+        Tensor gradForParent = new(LeftParent.Shape);
+        for (int b = 0; b < batchSize; b++)
+        {
+            // Вычисляем градиент для каждого примера в батче
+            for (int i = 0; i < numClasses; i++)
+            {
+                double sum = 0;
+                for (int j = 0; j < numClasses; j++)
+                {
+                    // ∂L/∂z_i = Σ_j (∂L/∂softmax_j * ∂softmax_j/∂z_i)
+                    // ∂softmax_j/∂z_i = softmax_j * (δ_ji - softmax_i)
+                    double delta_ji = (j == i) ? 1.0 : 0.0;
+                    double dsoftmax_j_dz_i = this[b, j] * (delta_ji - this[b, i]);
+                    sum += Grad![b, j] * dsoftmax_j_dz_i;
+                }
+                gradForParent[b, i] = sum;
+            }
+        }
+        LeftParent.Backward(gradForParent);
+    }
     break;
 ```
 
@@ -193,7 +216,7 @@ public static (Tensor softmaxOutput, Tensor loss) SoftmaxCrossEntropy(
             lossValue -= labels[i, j] * Math.Log(softmaxOutput[i, j] + 1e-10); // добавляем epsilon для стабильности
         }
     }
-    lossValue /= batchSize; // // усредняем по батчу
+    lossValue /= batchSize; // усредняем по батчу
 
     Tensor loss = new([lossValue], [1], logits, labels, TensorOperation.SoftmaxCrossEntropy,
         logits.RequiresGrad || labels.RequiresGrad);
@@ -305,6 +328,225 @@ case TensorOperation.Log:
         LeftParent.Backward(gradForParent);
     }
     break;
+```
+
+# 4. Subtract (вычитание)
+
+В прошлой статье мы реализовали операцию сложения Add, а также вычисление производной для нее. Но наша модель не будет полной до тех пор, пока мы не добавим операцию вычитания Subtract. Это очень важно для работы алгоритма автоматического дифференцирования. Без этой операции мы могли бы написать так:
+
+```csharp
+Tensor a = new Tensor([2, 2]);
+Tensor b = new Tensor([2, 2]);
+
+a.Fill(4);
+b.Fill(2);
+
+// Как написать a - b, если нет операции вычитания? Например, так:
+Tensor c = a + -b;
+```
+
+Во-первых, это выглядит некрасиво, во-вторых - во время Backward мы должны будем зайти в две ветки:
+
+```csharp
+private void BackwardToParents()
+{
+    switch (Operation)
+    {
+        // ... остальной код
+
+        case TensorOperation.Add: // зайдем сюда
+            // d(L)/dA = d(L)/dC * 1
+            // d(L)/dB = d(L)/dC * 1
+            LeftParent?.Backward(Grad);
+            RightParent?.Backward(Grad);
+            break;
+
+        case TensorOperation.Neg: // и сюда
+            // d(L)/dx = d(L)/d(-x) * (-1)
+            if (LeftParent != null)
+            {
+                Tensor negativeGrad = new(Shape);
+                negativeGrad.Fill(-1.0);
+                Tensor gradForParent = Grad! * negativeGrad;
+                LeftParent.Backward(gradForParent);
+            }
+            break;
+    }
+
+}
+```
+
+В конечном итоге, это приведет к неверному вычислению градиента для `c`. Поэтому, отдельно реализуем операцию вычитания - добавим в `TensorOperation`:
+
+```csharp
+namespace SharpLeNet.Core;
+
+/// <summary>
+/// Операция над тензором
+/// </summary>
+public enum TensorOperation
+{
+    // существующие операции...
+
+    /// <summary>
+    /// Вычитание
+    /// </summary>
+    Subtract,
+}
+
+```
+
+Далее, реализуем саму операцию в `TensorOperations`:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SharpLeNet.Core;
+
+public static class TensorOperations
+{
+    // существующие операции...
+
+    /// <summary>
+    /// Операция вычитания тензоров
+    /// </summary>
+    /// <param name="a">Левый операнд</param>
+    /// <param name="b">Правый операнд</param>
+    public static Tensor Subtract(this Tensor a, Tensor b)
+    {
+        if (!a.Shape.SequenceEqual(b.Shape))
+            throw new ArgumentException("Кол-во измерений и их размерности у слагаемых " +
+                "должны совпадать!");
+        double[] resultData = new double[a.Size];
+        for (int i = 0; i < a.Size; i++)
+        {
+            resultData[i] = a.Data[i] - b.Data[i];
+        }
+        return new Tensor(resultData, a.Shape, a, b, TensorOperation.Subtract,
+            a.RequiresGrad || b.RequiresGrad);
+    }
+}
+
+```
+
+И реализуем ветку вычисления производной в `BackwardToParents` класса `Tensor`:
+
+```csharp
+
+case TensorOperation.Subtract:
+    // d(L)/dA = d(L)/dC * 1
+    // d(L)/dB = d(L)/dC * (-1)
+    LeftParent?.Backward(Grad);
+    if (RightParent != null)
+    {
+        Tensor negativeGrad = new(Grad!.Shape);
+        negativeGrad.Fill(-1.0);
+        Tensor gradForRight = Grad! * negativeGrad;
+        RightParent.Backward(gradForRight);
+    }
+    break;
+
+```
+
+# 5. Broadcast - операция "размножения"
+
+Например, у нас есть Тензор-вектор - строка, заполненная некоторыми значениями. Нам необходимо превратить эту строку в матрицу, где строки - это те же изначальные строки-векторы. Этот функционал очень сильно понадобится при реализации слоев сети. Добавим операцию в `TensorOperation`:
+
+```csharp
+namespace SharpLeNet.Core;
+
+/// <summary>
+/// Операция над тензором
+/// </summary>
+public enum TensorOperation
+{
+    // существующие операции...
+
+    /// <summary>
+    /// Broadcast операции
+    /// </summary>
+    Broadcast,
+}
+
+```
+
+Далее, реализуем саму операцию в `TensorOperations`:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SharpLeNet.Core;
+
+public static class TensorOperations
+{
+    // существующие операции...
+
+    /// <summary>
+    /// Broadcast тензора
+    /// </summary>
+    public static Tensor Broadcast(this Tensor a, int[] newShape)
+    {
+        // Простая реализация для broadcast bias в LinearLayer
+        // a: [output_size]
+        // newShape: [batch_size, output_size]
+
+        double[] broadcastedData = new double[newShape.Aggregate(1, (x, y) => x * y)];
+        int batchSize = newShape[0];
+        int features = newShape[1];
+
+        for (int i = 0; i < batchSize; i++)
+        {
+            for (int j = 0; j < features; j++)
+            {
+                broadcastedData[i * features + j] = a.Data[j];
+            }
+        }
+
+        return new Tensor(broadcastedData, newShape, a, null, TensorOperation.Broadcast,
+            a.RequiresGrad);
+    }
+}
+
+```
+
+И реализуем ветку вычисления производной в `BackwardToParents` класса `Tensor`:
+
+```csharp
+
+case TensorOperation.Broadcast:
+    // Когда тензор broadcast'ится (например, bias [n] -> [batch, n])
+    // Градиент для оригинала = sum градиентов по broadcast dimension
+    if (LeftParent != null && Grad != null)
+    {
+        // LeftParent - оригинальный тензор (например, bias)
+        // Grad - градиент broadcasted тензора [batch, features]
+
+        int batchSize = Shape[0];
+        int features = Shape[1];
+
+        Tensor gradForParent = new Tensor(LeftParent.Shape);
+
+        // Суммируем градиенты по batch dimension
+        for (int b = 0; b < batchSize; b++)
+        {
+            for (int f = 0; f < features; f++)
+            {
+                gradForParent.Data[f] += Grad.Data[b * features + f];
+            }
+        }
+
+        LeftParent.Backward(gradForParent);
+    }
+    break;
+
 ```
 
 # 6. Итог простыми словами
