@@ -1,7 +1,7 @@
 ---
-title: "SGD: Дедок, который до сих пор в деле"
+title: "SharpLeNet. SGD: Дедок, который до сих пор в деле"
 date: 2026-02-23
-description: "SGD: Дедок, который до сих пор в деле"
+description: "SharpLeNet. SGD: Дедок, который до сих пор в деле"
 tags: ["SharpLeNet"]
 categories: ["SharpLeNet"]
 series: ["SharpLeNet"]
