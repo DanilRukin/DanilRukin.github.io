@@ -1,7 +1,7 @@
 ---
-title: "# Adam: Умный оптимизатор с характером"
+title: "SharpLeNet. Adam: Умный оптимизатор с характером"
 date: 2026-02-23
-description: "# Adam: Умный оптимизатор с характером"
+description: "SharpLeNet. Adam: Умный оптимизатор с характером"
 tags: ["SharpLeNet"]
 categories: ["SharpLeNet"]
 series: ["SharpLeNet"]
